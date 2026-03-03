@@ -1,4 +1,9 @@
+using CareerCraft.Core.Services;
+using CareerCraft.Infrastructure.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<ITemplateService, RazorTemplateService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -7,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Abstractions métier
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

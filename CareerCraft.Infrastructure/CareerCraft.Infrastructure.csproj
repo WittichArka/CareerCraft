@@ -4,6 +4,10 @@
     <ProjectReference Include="..\CareerCraft.Application\CareerCraft.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="RazorLight" Version="2.0.0-rc.3" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
