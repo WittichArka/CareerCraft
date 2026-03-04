@@ -9,5 +9,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Skill, SkillViewModel>().ReverseMap();
+        CreateMap<User, UserViewModel>().ReverseMap();
+        CreateMap<UserInfo, UserInfoViewModel>().ReverseMap();
     }
 }

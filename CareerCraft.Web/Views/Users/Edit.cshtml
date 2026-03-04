@@ -1,0 +1,226 @@
+@model CareerCraft.Web.Models.UserViewModel
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Editer l'utilisateur";
+    var apiBaseUrl = Configuration["ApiBaseUrl"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" id="UserId" />
+            <div class="form-group mb-3">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="M">Masculin</option>
+                    <option value="F">Féminin</option>
+                    <option value="O">Autre</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="PortraitPath" class="control-label"></label>
+                <input asp-for="PortraitPath" class="form-control" />
+                <span asp-validation-for="PortraitPath" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-8">
+        <h3>Informations complémentaires</h3>
+        <p>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#infoModal" onclick="resetInfoForm()">
+                Ajouter une info
+            </button>
+        </p>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="width: 50px;"></th>
+                    <th>Titre</th>
+                    <th>Valeur</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userInfoTableBody">
+                <!-- Rempli par JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal pour ajouter/éditer une UserInfo -->
+<div class="modal fade" id="infoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="infoForm">
+                    <input type="hidden" id="infoId" value="0" />
+                    <div class="mb-3">
+                        <label for="infoTitle" class="form-label">Titre</label>
+                        <input type="text" class="form-control" id="infoTitle" required placeholder="ex: Email, LinkedIn, Téléphone...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="infoValue" class="form-label">Valeur</label>
+                        <input type="text" class="form-control" id="infoValue" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="infoImagePath" class="form-label">Icône (optionnel)</label>
+                        <input type="text" class="form-control" id="infoImagePath">
+                    </div>
+                    <div class="mb-3">
+                        <label for="infoCss" class="form-label">Classe CSS (optionnel)</label>
+                        <input type="text" class="form-control" id="infoCss">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="saveUserInfo()">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        const userId = document.getElementById('UserId').value;
+        const apiBaseUrl = '@apiBaseUrl/api/users/' + userId + '/infos';
+        const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserInfos();
+            initSortable();
+        });
+
+        function initSortable() {
+            const el = document.getElementById('userInfoTableBody');
+            Sortable.create(el, {
+                handle: '.drag-handle',
+                animation: 150,
+                onEnd: function() {
+                    reorderInfos();
+                }
+            });
+        }
+
+        async function loadUserInfos() {
+            const response = await fetch(apiBaseUrl);
+            const infos = await response.json();
+            const tbody = document.getElementById('userInfoTableBody');
+            tbody.innerHTML = '';
+
+            infos.forEach(info => {
+                const row = `
+                    <tr data-id="${info.id}">
+                        <td><span class="drag-handle" style="cursor: move;">☰</span></td>
+                        <td>${info.title}</td>
+                        <td>${info.value}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-info" onclick="editInfo(${info.id})">Editer</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteInfo(${info.id})">Supprimer</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        function resetInfoForm() {
+            document.getElementById('infoId').value = "0";
+            document.getElementById('infoForm').reset();
+            document.getElementById('infoModalLabel').innerText = "Ajouter une information";
+        }
+
+        async function editInfo(id) {
+            const response = await fetch(apiBaseUrl);
+            const infos = await response.json();
+            const info = infos.find(i => i.id === id);
+
+            if (info) {
+                document.getElementById('infoId').value = info.id;
+                document.getElementById('infoTitle').value = info.title;
+                document.getElementById('infoValue').value = info.value;
+                document.getElementById('infoImagePath').value = info.imagePath || '';
+                document.getElementById('infoCss').value = info.customCssClass || '';
+                document.getElementById('infoModalLabel').innerText = "Editer l'information";
+                infoModal.show();
+            }
+        }
+
+        async function saveUserInfo() {
+            const id = parseInt(document.getElementById('infoId').value);
+            const info = {
+                id: id,
+                userId: parseInt(userId),
+                title: document.getElementById('infoTitle').value,
+                value: document.getElementById('infoValue').value,
+                imagePath: document.getElementById('infoImagePath').value,
+                customCssClass: document.getElementById('infoCss').value,
+                order: 0
+            };
+
+            const method = id === 0 ? 'POST' : 'PUT';
+            const url = id === 0 ? apiBaseUrl : apiBaseUrl + '/' + id;
+
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(info)
+            });
+
+            if (response.ok) {
+                infoModal.hide();
+                loadUserInfos();
+            } else {
+                alert("Erreur lors de l'enregistrement");
+            }
+        }
+
+        async function deleteInfo(id) {
+            if (confirm("Voulez-vous vraiment supprimer cette information ?")) {
+                const response = await fetch(apiBaseUrl + '/' + id, { method: 'DELETE' });
+                if (response.ok) {
+                    loadUserInfos();
+                }
+            }
+        }
+
+        async function reorderInfos() {
+            const rows = document.querySelectorAll('#userInfoTableBody tr');
+            const ids = Array.from(rows).map(row => parseInt(row.dataset.id));
+
+            await fetch(apiBaseUrl + '/reorder', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(ids)
+            });
+        }
+    </script>
+}
