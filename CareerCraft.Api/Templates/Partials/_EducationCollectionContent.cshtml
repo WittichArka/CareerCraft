@@ -1,0 +1,6 @@
+@model CareerCraft.Core.ViewModels.TemplateViewModel.EducationCollectionContent
+
+@foreach(var education in Model.Educations.OrderBy(e => e.Order))
+{
+    <p><strong>@education.StartYear – @if (education.EndYear == 0) { <text>Présent</text>} else { <text>@education.EndYear</text> }</strong> | @education.Name | @education.Place</p>
+}

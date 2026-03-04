@@ -1,0 +1,301 @@
+@using System.Linq
+@using RazorLight
+
+@model CareerCraft.Core.ViewModels.TemplateViewModel
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>@Model.FirstName @Model.LastName</title>
+    <style>
+        :root {
+            --dark-blue: #000;
+            --primary-blue: #1a2a3a;
+            --sidebar-width: 260px;
+            --photo-size: 180px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #dcdcdc; color: #333; }
+
+        .cv-page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- IMAGE DE FOND (HAUT DROITE) --- */
+        .board-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width); /* Zone d'affichage */
+            height: 250px;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .board-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: rotate(180deg);
+            opacity: 0.8;
+        }
+
+        /* --- PHOTO DE PROFIL --- */
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background-color: transparent;
+        }
+        .gradient-border-wrapper {
+            position: absolute;
+            z-index: 100;
+            top: 20px;
+            left: calc(var(--sidebar-width) - (var(--photo-size) / 2));
+            width: var(--photo-size);
+            height: var(--photo-size);
+            border-radius: 50%;
+            
+            /* Le dégradé */
+            background: linear-gradient(to right, darkblue, black);
+            
+            /* L'épaisseur de ta bordure */
+            padding: 6px; 
+            
+            /* On centre l'image à l'intérieur */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 10px rgba(0,0,0,0.4);
+        }        
+        /* --- COLONNE GAUCHE --- */
+        .sidebar {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sidebar-spacer { height: 165px; }
+
+        .sidebar h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border-bottom: 0px solid rgba(255,255,255,0.2);
+            padding-bottom: 5px;
+            margin: 25px 0 15px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-section {
+            /*color: white;*/
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            margin-top: 10px;
+        }
+
+        .sidebar-section img { 
+            width: 30px; 
+            height: 30px; 
+            margin-right: 10px; 
+            margin-left: -5px;
+        }
+        .sidebar-section img.wt {
+            filter: brightness(0) invert(1); 
+        }
+
+        .info-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.85rem; }
+        /* Forcer les icônes en blanc */
+        .info-item img { 
+            width: 18px; 
+            height: 18px; 
+            margin-right: 12px; 
+            /*filter: brightness(0) invert(1); */
+        }
+
+        .qr-area { margin-top: auto; text-align: center; padding-bottom: 10px; }
+        .qr-area img { width: 200px; background: white; padding: 5px; margin-bottom: 5px; }
+
+        /* --- COLONNE DROITE --- */
+        .main-content {
+            padding: 40px 40px 40px 40px;
+            z-index: 5;
+        }
+
+	.header { margin-left: 70px;}
+        .header h1 { font-size: 3rem; color: var(--dark-blue); font-weight: 400; line-height: 1; margin: 0; }
+        .header p { font-size: 1.15rem; color: #555; margin-top: 15px; margin-bottom: 0px; }
+
+        /* TITRES SECTIONS (PILULES NOIRES) */
+        .section-pill {
+            background: black;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 15px;
+            margin: 20px 0 15px 0px;
+            width: fit-content;
+        }
+        .section-pill img { 
+            width: 28px; 
+            height: 28px; 
+            margin-right: 10px; 
+            filter: brightness(0) invert(1); 
+        }
+        .section-pill h3 { font-size: 1.05rem; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+
+        .content-block { margin-bottom: 20px; }
+        p, li { font-size: 0.92rem; line-height: 1.4; margin-bottom: 5px; }
+        ul { list-style: none; padding-left: 0; }
+        .skill-cat { font-weight: bold; color: var(--dark-blue); }
+
+        .job-header { display: flex; justify-content: space-between; font-weight: bold; margin-top: 10px; }
+        .company { font-style: italic; color: #666; font-size: 0.85rem; margin-bottom: 5px; }
+
+        .guitar-bg {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px; /* Zone d'affichage */
+            height: 100px;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0.8;
+        }
+        .guitar-bg img {
+            display: block;
+            width: auto;
+            height: 90px;
+        }
+
+        .main-content {
+            padding: 35px;
+            overflow: hidden;
+        }
+        @@page {
+            size: A4;
+            margin: 0;
+        }
+
+        @@media print {
+
+            html, body {
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .cv-page {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .gradient-border-wrapper {
+                overflow: hidden;
+            }
+
+            .profile-photo {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                display: block;
+            }
+            .gradient-border-wrapper,
+            .profile-photo {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cv-page">
+    
+    <div class="gradient-border-wrapper">
+        <img src="Resources/portrait.webp" alt="@Model.FirstName @Model.LastName" class="profile-photo">
+    </div>
+    
+
+    <aside class="sidebar">
+        <div class="board-bg">
+            <img src="Resources/electronic-board.webp" alt="">
+        </div>
+        <div class="sidebar-spacer"></div>
+
+        <div class="sidebar-section">
+            <img src="Resources/thunder.svg" class="wt" alt="">
+	        <h3>Informations</h3>
+        </div>
+        @foreach(var info in Model.PersonalInfos.OrderBy(pi => pi.Order))
+        {
+            <div class="info-item">@{ await IncludeAsync("Partials/_PersonalInfo", info); }</div>
+        }
+
+        <div class="sidebar-section">
+            <img src="Resources/softskills.svg" class="wt" alt="">
+	        <h3>Soft Skills</h3>
+        </div>
+        @foreach(var item in Model.SoftSkills.OrderBy(s => s.Order))
+        {
+            <p>• @item.Name</p>
+        }
+
+        <div class="sidebar-section">
+            <img src="Resources/languages.svg" class="wt" alt="">
+	        <h3>Langues</h3>
+        </div>
+        <p>• Français: C2 (Maternel)</p>
+        <p>• Anglais: C1 (Professionnel)</p>
+        <p>• Polonais: B2</p>
+        <p>• NL / JP (A1)</p>
+
+        <div class="qr-area">
+            <img src="Resources/barcode.svg" alt="Barcode">
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="guitar-bg">
+            <img src="Resources/guitar.webp" alt="">
+        </div>
+        <div class="header">
+            <h1>@Model.FirstName <br /><strong>@Model.LastName</strong></h1>
+            <p>@Model.JobTitle</p>
+        </div>
+
+        @foreach(var section in Model.Sections)
+        {
+            <div>
+                @{ await IncludeAsync("Partials/_Section", section); }
+            </div>
+        }
+
+        <div class="section-pill">
+            <img src="Resources/interests.webp" alt="">
+            <h3>Centres d'intérêt</h3>
+        </div>
+        <p>Impression 3D, IoT, Électronique, Télémétrie Motec, CAD.</p>
+    </main>
+</div>
+
+</body>
+</html>

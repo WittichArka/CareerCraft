@@ -1,0 +1,28 @@
+@model CareerCraft.Core.ViewModels.TemplateViewModel.Section
+
+@if (!string.IsNullOrEmpty(Model.Title))
+{
+<div class="section-pill">
+    @if (!string.IsNullOrEmpty(Model.ImagePath))
+    {
+        <img src="@(Model.ImagePath)" alt="">
+    }
+    <h3>@Model.Title</h3>
+</div>
+}
+
+@if (Model.Content != null)
+{
+    if (Model.Content is CareerCraft.Core.ViewModels.TemplateViewModel.TextContent)
+    {
+        await IncludeAsync("Partials/_TextContent", Model.Content);
+    }
+    else if (Model.Content is CareerCraft.Core.ViewModels.TemplateViewModel.ExperienceCollectionContent)
+    {
+        await IncludeAsync("Partials/_ExperienceCollectionContent", Model.Content);
+    }
+    else if (Model.Content is CareerCraft.Core.ViewModels.TemplateViewModel.EducationCollectionContent)
+    {
+        await IncludeAsync("Partials/_EducationCollectionContent", Model.Content);
+    }
+}

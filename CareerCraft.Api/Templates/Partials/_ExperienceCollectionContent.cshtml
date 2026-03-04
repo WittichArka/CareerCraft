@@ -1,0 +1,9 @@
+@model CareerCraft.Core.ViewModels.TemplateViewModel.ExperienceCollectionContent
+
+@foreach(var experience in Model.Experiences.OrderBy(e => e.Order))
+{
+    <div class="content-block">
+        <div class="job-header"><span>@experience.Name<div class="company">@experience.Place</div></span><span class="datetxt">@experience.StartYear – @if (experience.EndYear == 0) { <text>Présent</text>} else { <text>@experience.EndYear</text> }</span></div>
+        <p>@experience.Description</p>
+    </div>
+}

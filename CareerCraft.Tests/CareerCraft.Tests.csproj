@@ -28,9 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Templates\**\*.cshtml">
+    <None Include="..\CareerCraft.Api\Templates\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+      <Link>Templates\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </None>
   </ItemGroup>
   
   <ItemGroup>
