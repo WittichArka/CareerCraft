@@ -482,3 +482,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+CareerCraft.Api/Templates/Resources/interests.webp
+.gitignore
+CareerCraft.Api/Templates/Resources/electronic-board.webp
+CareerCraft.Api/Templates/Resources/portrait.webp
+CareerCraft.Api/Templates/Resources/barcode.svg
