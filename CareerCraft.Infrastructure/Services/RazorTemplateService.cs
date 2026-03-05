@@ -1,5 +1,5 @@
 using CareerCraft.Core.Services;
-using CareerCraft.Core.ViewModels;
+using CareerCraft.Shared.ViewModels;
 using RazorLight;
 using Microsoft.CodeAnalysis; // Nécessaire pour MetadataReference
 using System.Reflection;

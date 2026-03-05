@@ -15,6 +15,16 @@ builder.Services.AddSingleton<IPdfGenerator, PuppeteerPdfGenerator>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Services de Vacancies et Synchronisation
+builder.Services.AddHttpClient<IVacancySourceService, HierarchScraperSourceService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5170"); // URL de HierarchScraper
+});
+builder.Services.AddScoped<IVacancySyncService, VacancySyncService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(CareerCraft.Shared.Mapping.MappingProfile));
+
 // Ajout du CORS pour autoriser le projet Web
 builder.Services.AddCors(options =>
 {
@@ -157,6 +167,23 @@ app.MapPatch("/api/users/{userId}/infos/reorder", async (int userId, List<int> i
     return Results.NoContent();
 })
     .WithName("ReorderUserInfos")
+    .WithOpenApi();
+
+// --- Endpoints pour la Synchronisation des Vacancies ---
+app.MapPost("/api/vacancies/sync", async (IVacancySyncService syncService) =>
+{
+    var result = await syncService.SyncAllAsync();
+    return Results.Ok(result);
+})
+    .WithName("SyncAllVacancies")
+    .WithOpenApi();
+
+app.MapPost("/api/vacancies/sync/{externalId}", async (int externalId, IVacancySyncService syncService) =>
+{
+    var result = await syncService.SyncByIdAsync(externalId);
+    return result.Success ? Results.Ok(result) : Results.NotFound(result);
+})
+    .WithName("SyncVacancyById")
     .WithOpenApi();
 
 app.Run();

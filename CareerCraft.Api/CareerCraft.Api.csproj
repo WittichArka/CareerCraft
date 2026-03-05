@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.12">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +25,7 @@
     <ProjectReference Include="..\CareerCraft.Core\CareerCraft.Core.csproj" />
     <ProjectReference Include="..\CareerCraft.Application\CareerCraft.Application.csproj" />
     <ProjectReference Include="..\CareerCraft.Infrastructure\CareerCraft.Infrastructure.csproj" />
+    <ProjectReference Include="..\CareerCraft.Shared\CareerCraft.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

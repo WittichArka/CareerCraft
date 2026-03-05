@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
@@ -25,6 +26,7 @@
     <ProjectReference Include="..\CareerCraft.Api\CareerCraft.Api.csproj" />
     <ProjectReference Include="..\CareerCraft.Application\CareerCraft.Application.csproj" />
     <ProjectReference Include="..\CareerCraft.Infrastructure\CareerCraft.Infrastructure.csproj" />
+    <ProjectReference Include="..\CareerCraft.Shared\CareerCraft.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

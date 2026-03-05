@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CareerCraft.Web.Models;
+namespace CareerCraft.Shared.ViewModels;
 
 public class UserInfoViewModel
 {

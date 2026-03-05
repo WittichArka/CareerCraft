@@ -1,6 +1,6 @@
 using CareerCraft.Core.Services;
 using CareerCraft.Infrastructure.Data;
-using CareerCraft.Web.Mapping;
+using CareerCraft.Shared.Mapping;
 using CareerCraft.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 

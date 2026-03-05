@@ -8,21 +8,23 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+public DbSet<Skill> Skills { get; set; }
+public DbSet<User> Users { get; set; }
+public DbSet<UserInfo> UserInfos { get; set; }
+public DbSet<Vacancy> Vacancies { get; set; }
 
-    public DbSet<Skill> Skills { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserInfo> UserInfos { get; set; }
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    base.OnModelCreating(modelBuilder);
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    modelBuilder.Entity<Vacancy>(entity =>
     {
-        base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<Skill>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Level).IsRequired();
-        });
+        entity.HasKey(e => e.Id);
+        entity.HasIndex(e => new { e.SourceName, e.ExternalId }).IsUnique();
+        entity.Property(e => e.SourceName).IsRequired().HasMaxLength(100);
+        entity.Property(e => e.ExternalId).IsRequired().HasMaxLength(100);
+    });
+
 
         modelBuilder.Entity<User>(entity =>
         {

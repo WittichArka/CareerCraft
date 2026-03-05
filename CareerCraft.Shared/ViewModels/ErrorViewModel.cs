@@ -1,4 +1,4 @@
-namespace CareerCraft.Web.Models;
+namespace CareerCraft.Shared.ViewModels;
 
 public class ErrorViewModel
 {

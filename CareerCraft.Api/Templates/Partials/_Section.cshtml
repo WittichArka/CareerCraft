@@ -1,4 +1,4 @@
-@model CareerCraft.Core.ViewModels.TemplateViewModel.Section
+@model CareerCraft.Shared.ViewModels.TemplateViewModel.Section
 
 @if (!string.IsNullOrEmpty(Model.Title))
 {
@@ -13,15 +13,15 @@
 
 @if (Model.Content != null)
 {
-    if (Model.Content is CareerCraft.Core.ViewModels.TemplateViewModel.TextContent)
+    if (Model.Content is CareerCraft.Shared.ViewModels.TemplateViewModel.TextContent)
     {
         await IncludeAsync("Partials/_TextContent", Model.Content);
     }
-    else if (Model.Content is CareerCraft.Core.ViewModels.TemplateViewModel.ExperienceCollectionContent)
+    else if (Model.Content is CareerCraft.Shared.ViewModels.TemplateViewModel.ExperienceCollectionContent)
     {
         await IncludeAsync("Partials/_ExperienceCollectionContent", Model.Content);
     }
-    else if (Model.Content is CareerCraft.Core.ViewModels.TemplateViewModel.EducationCollectionContent)
+    else if (Model.Content is CareerCraft.Shared.ViewModels.TemplateViewModel.EducationCollectionContent)
     {
         await IncludeAsync("Partials/_EducationCollectionContent", Model.Content);
     }

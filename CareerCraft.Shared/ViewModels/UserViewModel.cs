@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace CareerCraft.Web.Models;
+namespace CareerCraft.Shared.ViewModels;
 
 public class UserViewModel
 {

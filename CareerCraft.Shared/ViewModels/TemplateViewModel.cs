@@ -1,4 +1,4 @@
-namespace CareerCraft.Core.ViewModels;
+namespace CareerCraft.Shared.ViewModels;
 
 public class TemplateViewModel
 {

@@ -1,7 +1,7 @@
 using AutoMapper;
 using CareerCraft.Core.Entities;
 using CareerCraft.Core.Services;
-using CareerCraft.Web.Models;
+using CareerCraft.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

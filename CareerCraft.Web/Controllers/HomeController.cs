@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using CareerCraft.Web.Models;
+using CareerCraft.Shared.ViewModels;
 
 namespace CareerCraft.Web.Controllers;
 

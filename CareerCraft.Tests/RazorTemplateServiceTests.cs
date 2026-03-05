@@ -1,6 +1,6 @@
 using CareerCraft.Core.Services;
 using CareerCraft.Infrastructure.Services;
-using CareerCraft.Core.ViewModels;
+using CareerCraft.Shared.ViewModels;
 
 namespace CareerCraft.Tests;
 
