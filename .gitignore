@@ -482,10 +482,16 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+### CareerCraft Specifics
+# Database
+CareerCraft.Api/careercraft.db
+CareerCraft.Api/careercraft.db-wal
+CareerCraft.Api/careercraft.db-shm
+
+# Temp templates and resources (tests/generations)
+CareerCraft.Api/Templates/Temp_*
 CareerCraft.Api/Templates/Resources/interests.webp
 CareerCraft.Api/Templates/Resources/electronic-board.webp
 CareerCraft.Api/Templates/Resources/portrait.webp
 CareerCraft.Api/Templates/Resources/barcode.svg
-CareerCraft.Api/careercraft.db-wal
-CareerCraft.Api/careercraft.db-shm
-CareerCraft.Api/careercraft.db

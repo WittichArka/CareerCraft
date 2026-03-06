@@ -1,0 +1,18 @@
+name: MatchSkills
+description: Matches user skills with a job vacancy.
+template: |
+  You are an expert career coach. 
+  Given the following user profile and job vacancy, analyze how well the user's skills match the job requirements.
+  
+  User Profile:
+  {{$input}}
+  
+  Return a JSON object with the following structure:
+  {
+    "Score": 0-100,
+    "MatchingSkills": ["skill1", "skill2"],
+    "MissingSkills": ["skill3", "skill4"],
+    "Analysis": "A brief explanation of the match."
+  }
+  
+  Return ONLY the JSON.

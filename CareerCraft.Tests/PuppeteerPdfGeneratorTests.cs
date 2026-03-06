@@ -1,6 +1,7 @@
 using CareerCraft.Core.Services;
 using CareerCraft.Infrastructure.Services;
 using CareerCraft.Core.Extensions;
+using CareerCraft.Shared.ViewModels;
 
 using Microsoft.Extensions.Configuration;
 
@@ -34,7 +35,7 @@ public class PdfGeneratorTests
         await TestHtmlAndPdfGeneration(viewModel, "large", isDeleteTempFileAfterTest);
     }
 
-    private async Task TestHtmlAndPdfGeneration(Core.ViewModels.TemplateViewModel viewModel, string templateKey, bool isDeleteTempFileAfterTest)
+    private async Task TestHtmlAndPdfGeneration(TemplateViewModel viewModel, string templateKey, bool isDeleteTempFileAfterTest)
     {
         string htmlContent = await _templateService.RenderAsync(templateKey, viewModel);
 

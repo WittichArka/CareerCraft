@@ -14,6 +14,7 @@ builder.Services.AddSingleton<ITemplateService, RazorTemplateService>();
 builder.Services.AddSingleton<IPdfGenerator, PuppeteerPdfGenerator>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAiService, SemanticKernelAiService>();
 
 // Services de Vacancies et Synchronisation
 builder.Services.AddHttpClient<IVacancySourceService, HierarchScraperSourceService>(client =>
